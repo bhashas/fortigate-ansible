@@ -1,0 +1,27 @@
+---
+# ============================================================
+#  Playbook principal - FortiGate 60E + Cisco SG350
+#  Usage :
+#    ansible-playbook site.yml --ask-vault-pass
+#    ansible-playbook site.yml --vault-password-file ~/.vault_pass
+#
+#  Dry-run (sans appliquer) :
+#    ansible-playbook site.yml --ask-vault-pass --check
+# ============================================================
+
+- name: "Configuration Cisco SG350"
+  hosts: sg350
+  gather_facts: false
+  vars:
+    ansible_password: "{{ vault_sg350_password }}"
+  roles:
+    - sg350
+
+- name: "Configuration FortiGate 60E"
+  hosts: fortigate
+  gather_facts: false
+  vars:
+    ansible_password: "{{ vault_fgt_password }}"
+    vdom: root
+  roles:
+    - fortigate

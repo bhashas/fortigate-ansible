@@ -1,0 +1,18 @@
+---
+# ============================================================
+#  Role FortiGate - Interfaces LAN (port3/4/5)
+# ============================================================
+
+- name: "LAN | Configurer interfaces physiques par zone"
+  fortinet.fortios.fortios_system_interface:
+    vdom: root
+    state: present
+    system_interface:
+      name: "{{ item.name }}"
+      ip: "{{ item.ip }} {{ item.mask }}"
+      allowaccess: "{{ item.allowaccess }}"
+      role: lan
+      description: "{{ item.description }}"
+  loop: "{{ lan_interfaces }}"
+  loop_control:
+    label: "{{ item.name }} - {{ item.description }}"

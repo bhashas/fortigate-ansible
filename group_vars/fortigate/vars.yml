@@ -1,0 +1,117 @@
+---
+# ============================================================
+#  Variables FortiGate 60E - Non sensibles
+# ============================================================
+
+# WAN
+wan1_gateway: "203.0.113.1"
+wan1_ip: "203.0.113.2"
+wan1_mask: "255.255.255.252"
+
+wan2_gateway: "203.0.114.1"
+wan2_ip: "203.0.114.2"
+wan2_mask: "255.255.255.252"
+
+# Health Check SLA
+sla_servers:
+  - "8.8.8.8"
+  - "1.1.1.1"
+sla_interval: 5
+sla_failtime: 3
+sla_recoverytime: 5
+
+# Interfaces LAN
+lan_interfaces:
+  - name: port3
+    ip: "192.168.10.1"
+    mask: "255.255.255.0"
+    description: "Zone Corp"
+    allowaccess: "ping https ssh"
+
+  - name: port4
+    ip: "192.168.20.1"
+    mask: "255.255.255.0"
+    description: "Zone Guest"
+    allowaccess: "ping"
+
+  - name: port5
+    ip: "192.168.30.1"
+    mask: "255.255.255.0"
+    description: "Zone IoT"
+    allowaccess: "ping"
+
+# DHCP
+dhcp_pools:
+  - id: 1
+    interface: port3
+    gateway: "192.168.10.1"
+    mask: "255.255.255.0"
+    start: "192.168.10.100"
+    end: "192.168.10.200"
+    dns1: "1.1.1.1"
+    dns2: "8.8.8.8"
+    lease: 86400
+
+  - id: 2
+    interface: port4
+    gateway: "192.168.20.1"
+    mask: "255.255.255.0"
+    start: "192.168.20.100"
+    end: "192.168.20.200"
+    dns1: "1.1.1.1"
+    dns2: "8.8.8.8"
+    lease: 3600
+
+  - id: 3
+    interface: port5
+    gateway: "192.168.30.1"
+    mask: "255.255.255.0"
+    start: "192.168.30.100"
+    end: "192.168.30.200"
+    dns1: "1.1.1.1"
+    dns2: "8.8.8.8"
+    lease: 86400
+
+# Firewall policies
+firewall_policies:
+  - id: 1
+    name: Corp_to_WAN1
+    srcintf: port3
+    dstintf: wan1
+    service: "ALL"
+    nat: enable
+
+  - id: 2
+    name: Corp_to_WAN2
+    srcintf: port3
+    dstintf: wan2
+    service: "ALL"
+    nat: enable
+
+  - id: 3
+    name: Guest_to_WAN1
+    srcintf: port4
+    dstintf: wan1
+    service: "HTTP HTTPS DNS"
+    nat: enable
+
+  - id: 4
+    name: Guest_to_WAN2
+    srcintf: port4
+    dstintf: wan2
+    service: "HTTP HTTPS DNS"
+    nat: enable
+
+  - id: 5
+    name: IoT_to_WAN1
+    srcintf: port5
+    dstintf: wan1
+    service: "HTTP HTTPS DNS"
+    nat: enable
+
+  - id: 6
+    name: IoT_to_WAN2
+    srcintf: port5
+    dstintf: wan2
+    service: "HTTP HTTPS DNS"
+    nat: enable

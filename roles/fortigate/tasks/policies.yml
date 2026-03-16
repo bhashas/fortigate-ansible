@@ -1,0 +1,30 @@
+---
+# ============================================================
+#  Role FortiGate - Firewall Policies
+#  Inter-VLAN bloqué par deny implicite FortiOS
+# ============================================================
+
+- name: "POLICY | Configurer policies Internet par zone"
+  fortinet.fortios.fortios_firewall_policy:
+    vdom: root
+    state: present
+    firewall_policy:
+      policyid: "{{ item.id }}"
+      name: "{{ item.name }}"
+      srcintf:
+        - name: "{{ item.srcintf }}"
+      dstintf:
+        - name: "{{ item.dstintf }}"
+      srcaddr:
+        - name: all
+      dstaddr:
+        - name: all
+      action: accept
+      schedule: always
+      service:
+        - name: "{{ item.service }}"
+      nat: "{{ item.nat }}"
+      logtraffic: all
+  loop: "{{ firewall_policies }}"
+  loop_control:
+    label: "Policy {{ item.id }} - {{ item.name }}"

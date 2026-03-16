@@ -1,0 +1,44 @@
+# ============================================================
+#  .gitignore - FortiGate Ansible Project
+# ============================================================
+
+# Ansible Vault password file - NE JAMAIS COMMITER
+.vault_pass
+*.vault_pass
+.vault_password
+
+# Fichiers vault non chiffrés - NE JAMAIS COMMITER
+# (les vault.yml chiffrés PEUVENT être commités)
+**/vault_plaintext.yml
+**/vault.yml.bak
+
+# Clés SSH privées
+*.pem
+*.key
+id_rsa
+id_ed25519
+~/.ssh/
+
+# Logs Ansible
+*.log
+/logs/
+
+# Cache Ansible
+.ansible/
+*.retry
+
+# Variables locales sensibles
+.env
+*.env
+local_vars.yml
+
+# Editeur
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

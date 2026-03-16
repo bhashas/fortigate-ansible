@@ -1,0 +1,24 @@
+---
+# ============================================================
+#  Role FortiGate - Serveurs DHCP par zone
+# ============================================================
+
+- name: "DHCP | Configurer pools DHCP par zone"
+  fortinet.fortios.fortios_system_dhcp_server:
+    vdom: root
+    state: present
+    system_dhcp_server:
+      id: "{{ item.id }}"
+      interface: "{{ item.interface }}"
+      default_gateway: "{{ item.gateway }}"
+      netmask: "{{ item.mask }}"
+      dns_server1: "{{ item.dns1 }}"
+      dns_server2: "{{ item.dns2 }}"
+      lease_time: "{{ item.lease }}"
+      ip_range:
+        - id: 1
+          start_ip: "{{ item.start }}"
+          end_ip: "{{ item.end }}"
+  loop: "{{ dhcp_pools }}"
+  loop_control:
+    label: "DHCP {{ item.interface }} → {{ item.start }} - {{ item.end }}"

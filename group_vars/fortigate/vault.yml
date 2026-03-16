@@ -1,0 +1,6 @@
+# ============================================================
+#  FICHIER VAULT - À chiffrer avec : ansible-vault encrypt vault.yml
+#  NE JAMAIS COMMITER CE FICHIER EN CLAIR SUR GIT
+# ============================================================
+
+vault_fgt_password: "TonMotDePasseFortiGate"

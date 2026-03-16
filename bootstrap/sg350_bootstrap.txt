@@ -1,0 +1,67 @@
+! ============================================================
+!  Cisco SG350 — Bootstrap console série
+!  À exécuter UNE SEULE FOIS via câble console (RJ45 → USB)
+!  Baud rate : 9600 8N1
+!  Logiciel  : Putty (Windows) ou screen /dev/ttyUSB0 9600 (Linux)
+!
+!  Objectif : activer SSH sur VLAN 99 Management
+!  → Ansible prend le relais après cette étape
+! ============================================================
+
+enable
+configure terminal
+
+! 1. IP temporaire VLAN 1 pour démarrer SSH immédiatement
+interface vlan 1
+ ip address 192.168.1.254 255.255.255.0
+ no shutdown
+exit
+
+! 2. Générer clé RSA et activer SSH
+crypto key generate rsa
+ip ssh server
+
+! 3. Créer utilisateur admin local
+username admin privilege 15 password CHANGE_ME
+
+! 4. Autoriser SSH sur les lignes VTY
+line vty 0 15
+ login local
+ transport input ssh
+exit
+
+! 5. Créer VLAN 99 Management (définitif)
+vlan 99
+ name Management
+exit
+
+! 6. SVI management définitif sur VLAN 99
+interface vlan 99
+ ip address 192.168.99.254 255.255.255.0
+ no shutdown
+exit
+
+! 7. Port vers Ubuntu Management en access VLAN 99
+!    (adapter le numéro de port selon câblage)
+interface GigabitEthernet10
+ description "Ubuntu Management"
+ switchport mode access
+ switchport access vlan 99
+ no shutdown
+exit
+
+! 8. Supprimer IP temporaire VLAN 1
+interface vlan 1
+ no ip address
+ shutdown
+exit
+
+! 9. Sauvegarder
+write memory
+
+! ============================================================
+!  Vérification
+!  Depuis Ubuntu Management :
+!    ssh admin@192.168.99.254
+!  Si SSH répond → câble console débranchable ✅
+! ============================================================

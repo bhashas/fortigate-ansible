@@ -1,0 +1,3 @@
+---
+# À chiffrer avec : ansible-vault encrypt group_vars/sg350/vault.yml
+vault_sg350_password: "CHANGE_ME"

@@ -1,0 +1,20 @@
+---
+vlans:
+  - { id: 10, name: Corp }
+  - { id: 20, name: Guest }
+  - { id: 30, name: IoT }
+  - { id: 99, name: Management }
+
+uplink_ports:
+  - { interface: GigabitEthernet1, vlan: 10, description: "Uplink FortiGate port3 - Corp" }
+  - { interface: GigabitEthernet2, vlan: 20, description: "Uplink FortiGate port4 - Guest" }
+  - { interface: GigabitEthernet3, vlan: 30, description: "Uplink FortiGate port5 - IoT" }
+
+access_ports:
+  - { interface: GigabitEthernet4, vlan: 10, description: "PC Corp 1" }
+  - { interface: GigabitEthernet5, vlan: 10, description: "PC Corp 2" }
+  - { interface: GigabitEthernet6, vlan: 20, description: "PC Guest 1" }
+  - { interface: GigabitEthernet7, vlan: 20, description: "PC Guest 2" }
+  - { interface: GigabitEthernet8, vlan: 30, description: "IoT Device 1" }
+  - { interface: GigabitEthernet9, vlan: 30, description: "IoT Device 2" }
+  - { interface: GigabitEthernet10, vlan: 99, description: "Ubuntu Management" }

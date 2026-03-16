@@ -1,0 +1,82 @@
+---
+# ============================================================
+#  Role FortiGate - WAN Dual + Failover
+# ============================================================
+
+- name: "WAN | Configurer interface wan1"
+  fortinet.fortios.fortios_system_interface:
+    vdom: root
+    state: present
+    system_interface:
+      name: wan1
+      mode: static
+      ip: "{{ wan1_ip }} {{ wan1_mask }}"
+      allowaccess: ping
+      role: wan
+      description: "FAI Principal"
+
+- name: "WAN | Configurer interface wan2"
+  fortinet.fortios.fortios_system_interface:
+    vdom: root
+    state: present
+    system_interface:
+      name: wan2
+      mode: static
+      ip: "{{ wan2_ip }} {{ wan2_mask }}"
+      allowaccess: ping
+      role: wan
+      description: "FAI Backup"
+
+- name: "WAN | Route statique principale (wan1 - distance 10)"
+  fortinet.fortios.fortios_router_static:
+    vdom: root
+    state: present
+    router_static:
+      seq_num: 1
+      dst: "0.0.0.0 0.0.0.0"
+      gateway: "{{ wan1_gateway }}"
+      device: wan1
+      distance: 10
+      comment: "Route principale FAI1"
+
+- name: "WAN | Route statique backup (wan2 - distance 20)"
+  fortinet.fortios.fortios_router_static:
+    vdom: root
+    state: present
+    router_static:
+      seq_num: 2
+      dst: "0.0.0.0 0.0.0.0"
+      gateway: "{{ wan2_gateway }}"
+      device: wan2
+      distance: 20
+      comment: "Route backup FAI2"
+
+- name: "WAN | Health check SLA wan1"
+  fortinet.fortios.fortios_system_link_monitor:
+    vdom: root
+    state: present
+    system_link_monitor:
+      name: monitor-wan1
+      srcintf: wan1
+      server:
+        - "{{ sla_servers[0] }}"
+        - "{{ sla_servers[1] }}"
+      interval: "{{ sla_interval }}"
+      failtime: "{{ sla_failtime }}"
+      recoverytime: "{{ sla_recoverytime }}"
+      update_static_route: enable
+
+- name: "WAN | Health check SLA wan2"
+  fortinet.fortios.fortios_system_link_monitor:
+    vdom: root
+    state: present
+    system_link_monitor:
+      name: monitor-wan2
+      srcintf: wan2
+      server:
+        - "{{ sla_servers[0] }}"
+        - "{{ sla_servers[1] }}"
+      interval: "{{ sla_interval }}"
+      failtime: "{{ sla_failtime }}"
+      recoverytime: "{{ sla_recoverytime }}"
+      update_static_route: enable

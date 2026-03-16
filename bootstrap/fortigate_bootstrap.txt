@@ -1,0 +1,47 @@
+# ============================================================
+#  FortiGate 60E — Bootstrap console série
+#  À exécuter UNE SEULE FOIS via câble console (RJ45 → USB)
+#  Baud rate : 9600 8N1
+#  Logiciel  : Putty (Windows) ou screen /dev/ttyUSB0 9600 (Linux)
+#
+#  Objectif : activer SSH sur le port MGMT
+#  → Ansible prend le relais après cette étape
+# ============================================================
+
+# 1. IP de management sur port MGMT dédié
+config system interface
+    edit mgmt
+        set ip 192.168.99.99 255.255.255.0
+        set allowaccess ssh https ping
+        set role management
+        set description "Management VLAN99"
+    next
+end
+
+# 2. Route vers le segment management si besoin
+config router static
+    edit 10
+        set dst 192.168.99.0 255.255.255.0
+        set device mgmt
+    next
+end
+
+# 3. Activer SSH (port 22)
+config system global
+    set admin-ssh-port 22
+end
+
+# 4. Définir le mot de passe admin
+#    (sera remplacé par Ansible Vault ensuite)
+config system admin
+    edit admin
+        set password CHANGE_ME
+    next
+end
+
+# ============================================================
+#  Vérification
+#  Depuis Ubuntu Management :
+#    ssh admin@192.168.99.99
+#  Si SSH répond → câble console débranchable ✅
+# ============================================================
