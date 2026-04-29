@@ -200,6 +200,6 @@ Une fois SSH accessible → Ansible prend le relais, le câble console n'est plu
 
 ## 👤 Auteur
 
-**Hashas Brahim**  
-Ingénieur Réseaux & Télécoms — Cloud & DevSecOps  
-[LinkedIn](https://www.linkedin.com/in/brahim-hashas-221902100/) · [GitHub](https://github.com/bhashas)
+**Brahim Hashas** — Ingénieur Réseaux & Cloud & DevSecOps  
+📩 [b.hashas@hashas.fr](mailto:b.hashas@hashas.fr)  
+💼 [linkedin.com/in/brahim-hashas-221902100](https://www.linkedin.com/in/brahim-hashas-221902100/)
