@@ -56,4 +56,4 @@ jobs:
         run: |
           echo "✅ Lint OK — déploiement réel sur FortiGate/SG350 déclenché manuellement"
           echo "Commit : ${{ github.sha }}"
-          echo "Auteur : ${{ github.actor }}"
+          
