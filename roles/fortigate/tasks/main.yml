@@ -4,13 +4,13 @@
 # ============================================================
 
 - name: "Import tasks WAN"
-  import_tasks: wan.yml
+  ansible.builtin.import_tasks: wan.yml
 
 - name: "Import tasks LAN"
-  import_tasks: lan.yml
+  ansible.builtin.import_tasks: lan.yml
 
 - name: "Import tasks DHCP"
-  import_tasks: dhcp.yml
+  ansible.builtin.import_tasks: dhcp.yml
 
 - name: "Import tasks Policies"
-  import_tasks: policies.yml
+  ansible.builtin.import_tasks: policies.yml
